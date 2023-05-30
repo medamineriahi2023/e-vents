@@ -1,6 +1,5 @@
 package tn.esprit.events.entities;
 
-
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -15,13 +14,16 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Builder
 
-public class Comments {
+public class React {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
+
     private String userId;
-    private  String content;
+
+    private boolean liked;
+
 
 
 }

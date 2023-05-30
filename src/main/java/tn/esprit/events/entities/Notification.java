@@ -19,11 +19,11 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
     private NotificationType type;
-    private User senderId;
+    private String senderId;
     private  long idEvent;
-    private User receiverId;
+    private String receiverId;
 
 
 }

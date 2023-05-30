@@ -1,14 +1,12 @@
 package tn.esprit.events.entities;
 
 
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDate;
-import lombok.*;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,9 +19,11 @@ public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
     private String serviceName;
-    private List<String> staffs;
+
+    // list of users ids joined by ","
+    private String staffs;
 
 
 }

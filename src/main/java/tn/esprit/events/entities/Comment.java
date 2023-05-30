@@ -1,11 +1,9 @@
 package tn.esprit.events.entities;
 
+
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -13,15 +11,14 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class Reacts {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
     private String userId;
-    private boolean liked;
 
+    private  String content;
 
 
 }

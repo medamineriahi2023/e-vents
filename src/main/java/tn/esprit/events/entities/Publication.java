@@ -2,10 +2,7 @@ package tn.esprit.events.entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,13 +17,19 @@ public class Publication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
     private LocalDate date;
     private  String content;
     private Topic topic;
-    private List<String> users;
-    private String creatorId;
 
+
+    //list of ids joined by ","
+    private String users;
+    private String creatorId;
+    @OneToMany(cascade = {CascadeType.REMOVE})
+    private List<React> reacts;
+    @OneToMany(cascade = {CascadeType.REMOVE})
+    private List<Comment> comments;
 
 
 }
