@@ -19,7 +19,6 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private String name;
     private boolean archived;

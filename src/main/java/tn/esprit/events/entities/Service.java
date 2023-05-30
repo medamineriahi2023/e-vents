@@ -21,7 +21,6 @@ public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private String serviceName;
     private List<String> staffs;

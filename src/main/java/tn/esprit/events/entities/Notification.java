@@ -19,7 +19,6 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private NotificationType type;
     private User senderId;

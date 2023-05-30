@@ -18,7 +18,6 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private String govName;
     private boolean archived;

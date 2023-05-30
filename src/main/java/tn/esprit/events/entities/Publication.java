@@ -20,7 +20,6 @@ public class Publication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private LocalDate date;
     private  String content;

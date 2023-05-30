@@ -18,7 +18,6 @@ public class Reacts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
     private long id;
     private String userId;
     private boolean liked;

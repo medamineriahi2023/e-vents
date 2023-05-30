@@ -3,24 +3,14 @@ package tn.esprit.events.entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-
+@Data
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Setter(AccessLevel.NONE)
-    private long id;
+    private String id;
+    private String username;
+    private String email;
+    private String firstName;
+    private String lastName;
 
 
 
