@@ -1,8 +1,9 @@
-package tn.esprit.events.controllers.abstracts;
+package tn.esprit.events.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tn.esprit.events.controllers.abstracts.AbstractController;
 import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.services.ICommentService;
 
