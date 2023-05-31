@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-public interface AbstractController<T> {
+public interface AbstractCrudController<T> {
 
 
     @PostMapping

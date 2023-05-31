@@ -16,4 +16,8 @@ public class UserDto {
     private String email;
 
 
+
+    //TODO missing attributes
+
+
 }
