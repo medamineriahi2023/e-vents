@@ -2,6 +2,7 @@ package tn.esprit.events.dtos;
 
 import lombok.*;
 import tn.esprit.events.entities.*;
+import tn.esprit.events.userUtils.UserKcService;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,8 +24,8 @@ public class PublicationDto {
 
 
     //list of ids joined by ","
-    private String users;
-    private String creatorId;
+    private List<UserDto> users;
+    private UserDto creator;
     @OneToMany(cascade = {CascadeType.REMOVE})
     private List<React> reacts;
     @OneToMany(cascade = {CascadeType.REMOVE})
@@ -32,11 +33,18 @@ public class PublicationDto {
 
 
     public static PublicationDto entityToDto(Publication publication){
-        return PublicationDto.builder().id(publication.getId()).date(publication.getDate()).content(publication.getContent()).topic(publication.getTopic()).users(publication.getUsers()).creatorId(publication.getCreatorId()).reacts(publication.getReacts()).comments(publication.getComments()).build();
+        return PublicationDto.builder().id(publication.getId()).date(publication.getDate()).
+                content(publication.getContent()).topic(publication.getTopic()).
+                users(UserKcService.splitAndReturn(publication.getUsers())).
+                creator(UserKcService.findById(publication.getCreatorId())).reacts(publication.getReacts()).
+                comments(publication.getComments()).build();
     }
 
     public static Publication dtoToEntity(PublicationDto publicationDto){
-        return Publication.builder().id(publicationDto.getId()).date(publicationDto.getDate()).content(publicationDto.getContent()).topic(publicationDto.getTopic()).users(publicationDto.getUsers()).creatorId(publicationDto.getCreatorId()).reacts(publicationDto.getReacts()).comments(publicationDto.getComments()).build();
+        return Publication.builder().id(publicationDto.getId()).date(publicationDto.getDate()).
+                content(publicationDto.getContent()).topic(publicationDto.getTopic()).
+                users(publicationDto.getUsers().stream().map(UserDto::getId).collect(Collectors.joining(","))).
+                creatorId(publicationDto.creator.getId()).reacts(publicationDto.getReacts()).comments(publicationDto.getComments()).build();
     }
 
     public static List<PublicationDto> entitiesToDtos(List<Publication> publications){

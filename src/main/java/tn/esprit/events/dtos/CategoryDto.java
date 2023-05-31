@@ -26,11 +26,13 @@ public class CategoryDto {
     private  String icon;
 
     public static CategoryDto entityToDto(Category category){
-        return CategoryDto.builder().name(category.getName()).id(category.getId()).icon(category.getIcon()).archived(category.isArchived()).build();
+        return CategoryDto.builder().name(category.getName()).id(category.
+                getId()).icon(category.getIcon()).archived(category.isArchived()).build();
     }
 
     public static Category dtoToEntity(CategoryDto categoryDto){
-        return Category.builder().name(categoryDto.getName()).id(categoryDto.getId()).icon(categoryDto.getIcon()).archived(categoryDto.isArchived()).build();
+        return Category.builder().name(categoryDto.getName()).id(categoryDto.getId()).
+                icon(categoryDto.getIcon()).archived(categoryDto.isArchived()).build();
     }
 
     public static List<CategoryDto> entitiesToDtos(List<Category> categories){

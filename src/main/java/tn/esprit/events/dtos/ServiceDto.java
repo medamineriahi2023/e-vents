@@ -3,6 +3,7 @@ package tn.esprit.events.dtos;
 
 import lombok.*;
 import tn.esprit.events.entities.Service;
+import tn.esprit.events.userUtils.UserKcService;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,15 +24,17 @@ public class ServiceDto {
     private String serviceName;
 
     // list of users ids joined by ","
-    private String staffs;
+    private List<UserDto> staffs;
 
 
     public static ServiceDto entityToDto(Service service){
-        return ServiceDto.builder().id(service.getId()).serviceName(service.getServiceName()).staffs(service.getStaffs()).build();
+        return ServiceDto.builder().id(service.getId()).serviceName(service.getServiceName()).
+                staffs(UserKcService.splitAndReturn(service.getStaffs())).build();
     }
 
     public static Service dtoToEntity(ServiceDto serviceDto){
-        return Service.builder().id(serviceDto.getId()).serviceName(serviceDto.getServiceName()).staffs(serviceDto.getStaffs()).build();
+        return Service.builder().id(serviceDto.getId()).serviceName(serviceDto.getServiceName()).
+                staffs(serviceDto.getStaffs().stream().map(UserDto::getId).collect(Collectors.joining(","))).build();
     }
 
     public static List<ServiceDto> entitiesToDtos(List<Service> services){

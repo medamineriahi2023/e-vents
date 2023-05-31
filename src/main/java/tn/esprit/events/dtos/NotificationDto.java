@@ -4,6 +4,7 @@ package tn.esprit.events.dtos;
 import lombok.*;
 import tn.esprit.events.entities.Notification;
 import tn.esprit.events.entities.NotificationType;
+import tn.esprit.events.userUtils.UserKcService;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,16 +23,19 @@ public class NotificationDto {
 
     private Long id;
     private NotificationType type;
-    private String senderId;
+    private UserDto sender;
     private  long idEvent;
-    private String receiverId;
-
+    private UserDto receiver;
+    //TODO missing attributes
     public static NotificationDto entityToDto(Notification notification){
-        return NotificationDto.builder().id(notification.getId()).type(notification.getType()).senderId(notification.getSenderId()).idEvent(notification.getIdEvent()).receiverId(notification.getReceiverId()).build();
+        return NotificationDto.builder().id(notification.getId()).type(notification.getType()).sender(UserKcService.findById(notification.getSenderId()))
+                .idEvent(notification.getIdEvent()).receiver(UserKcService.findById(notification.getReceiverId())).build();
     }
 
     public static Notification dtoToEntity(NotificationDto notificationDto){
-        return Notification.builder().id(notificationDto.getId()).type(notificationDto.getType()).senderId(notificationDto.getSenderId()).idEvent(notificationDto.getIdEvent()).receiverId(notificationDto.getReceiverId()).build();
+        return Notification.builder().id(notificationDto.getId()).type(notificationDto.getType()).
+                senderId(notificationDto.getSender().getId()).idEvent(notificationDto.getIdEvent()).
+                receiverId(notificationDto.getReceiver().getId()).build();
     }
 
     public static List<NotificationDto> entitiesToDtos(List<Notification> notifications){
