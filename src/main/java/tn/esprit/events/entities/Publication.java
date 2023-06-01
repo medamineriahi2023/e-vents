@@ -24,6 +24,7 @@ public class Publication {
 
 
     //list of ids joined by ","
+    @Column(length = 10000)
     private String users;
     private String creatorId;
     @OneToMany(cascade = {CascadeType.REMOVE})

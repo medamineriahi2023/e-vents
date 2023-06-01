@@ -30,4 +30,9 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryDto update(CategoryDto categoryDto) {
         return CategoryDto.entityToDto(categotyRepository.save(CategoryDto.dtoToEntity(categoryDto)));
     }
+
+    @Override
+    public CategoryDto getById(Long id) {
+        return CategoryDto.entityToDto(categotyRepository.findById(id).get());
+    }
 }

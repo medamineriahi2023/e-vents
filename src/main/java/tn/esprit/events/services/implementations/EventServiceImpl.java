@@ -2,6 +2,7 @@ package tn.esprit.events.services.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.esprit.events.dtos.CategoryDto;
 import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.repositories.CommentRepository;
@@ -29,5 +30,11 @@ public class EventServiceImpl implements IEventService {
     @Override
     public EventDto update(EventDto eventDto) {
         return EventDto.entityToDto(eventRepository.save(EventDto.dtoToEntity(eventDto)));
+    }
+
+    @Override
+    public EventDto getById(Long id) {
+        return EventDto.entityToDto(eventRepository.findById(id).get());
+
     }
 }

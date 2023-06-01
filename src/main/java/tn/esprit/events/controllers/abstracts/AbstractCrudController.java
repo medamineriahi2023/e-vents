@@ -16,6 +16,7 @@ public interface AbstractCrudController<T> {
     @GetMapping
     List<T> getAll ();
 
+
     @PutMapping
     T update (@RequestBody T t);
 

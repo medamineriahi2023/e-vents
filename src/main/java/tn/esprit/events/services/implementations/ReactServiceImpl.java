@@ -3,6 +3,7 @@ package tn.esprit.events.services.implementations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.CommentDto;
+import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.dtos.ReactDto;
 import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.ReactRepository;
@@ -29,5 +30,11 @@ public class ReactServiceImpl implements IReactService {
     @Override
     public ReactDto update(ReactDto reactDto) {
         return ReactDto.entityToDto(reactRepository.save(ReactDto.dtoToEntity(reactDto)));
+    }
+
+    @Override
+    public ReactDto getById(Long id) {
+        return ReactDto.entityToDto(reactRepository.findById(id).get());
+
     }
 }

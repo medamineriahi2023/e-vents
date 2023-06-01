@@ -3,6 +3,7 @@ package tn.esprit.events.services.implementations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.CommentDto;
+import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.dtos.MessageDto;
 import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.MessageRepository;
@@ -29,5 +30,10 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public MessageDto update(MessageDto messageDto) {
         return MessageDto.entityToDto(messageRepository.save(MessageDto.dtoToEntity(messageDto)));
+    }
+
+    @Override
+    public MessageDto getById(Long id) {
+        return MessageDto.entityToDto(messageRepository.findById(id).get());
     }
 }

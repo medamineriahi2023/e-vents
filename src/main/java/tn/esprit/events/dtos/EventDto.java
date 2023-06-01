@@ -2,6 +2,8 @@ package tn.esprit.events.dtos;
 
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import tn.esprit.events.entities.*;
 import tn.esprit.events.userUtils.UserKcService;
 
@@ -14,7 +16,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class EventDto {
 
 
