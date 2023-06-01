@@ -1,6 +1,7 @@
 package tn.esprit.events.kafkaUtils.notifications;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.NotificationDto;
@@ -33,6 +34,7 @@ public class KafkaNotificationServiceImpl implements KafkaNotificationService {
      */
     private <T> String toJson(T object) {
         try {
+            mapper.registerModule(new JavaTimeModule());
             return mapper.writeValueAsString(object);
         } catch (Exception e) {
             throw new MapperException(e.getMessage());

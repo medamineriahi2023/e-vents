@@ -1,6 +1,7 @@
 package tn.esprit.events.kafkaUtils.webSocketConsumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -48,6 +49,7 @@ public class KafkaConsumer {
      */
     private <T> T fromJson(String json, Class<T> clazz) {
         try {
+            mapper.registerModule(new JavaTimeModule());
             return mapper.readValue(json, clazz);
         } catch (Exception e) {
             throw new MapperException(e.getMessage());

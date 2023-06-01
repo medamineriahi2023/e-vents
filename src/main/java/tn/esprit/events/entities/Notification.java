@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@ToString
 public class Notification {
 
     @Id

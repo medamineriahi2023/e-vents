@@ -1,6 +1,7 @@
 package tn.esprit.events.kafkaUtils.messages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.MessageDto;
 import tn.esprit.events.kafkaUtils.BrokerProducerService;
@@ -28,6 +29,7 @@ public class KafkaMessageServiceImpl implements KafkaMessageService {
      */
     private <T> String toJson(T object) {
         try {
+            mapper.registerModule(new JavaTimeModule());
             return mapper.writeValueAsString(object);
         } catch (Exception e) {
             throw new MapperException(e.getMessage());
