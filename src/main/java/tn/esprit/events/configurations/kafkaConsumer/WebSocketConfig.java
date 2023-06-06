@@ -18,6 +18,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // ui client will use this to connect to the server
-        registry.addEndpoint("/ws-notification").setAllowedOrigins("http://localhost:4200", "http://197.26.34.110").withSockJS();
+        registry.addEndpoint("/ws-notification").setAllowedOrigins("http://localhost:4200", "http://eventsapp.ddns.net").withSockJS();
     }
 }
