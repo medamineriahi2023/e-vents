@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("category")
 @RequiredArgsConstructor
+
 public class CategoryController implements AbstractCrudController<CategoryDto> {
 
     private final ICategoryService iCategoryService;
