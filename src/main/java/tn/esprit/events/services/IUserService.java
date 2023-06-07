@@ -31,10 +31,6 @@ public interface IUserService {
     ResponseEntity<?> editUser(UserDto userRequest);
 
 
-    ResponseEntity<?> getAllUsers();
-
-
-
     ResponseEntity<?> createUser(UserDto user);
 
 }

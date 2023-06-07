@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,8 @@ public class UserDto {
     private LocationDto locationDto;
     private boolean isActive;
     private String password;
+
+    private List<Role> roles;
 
 
 

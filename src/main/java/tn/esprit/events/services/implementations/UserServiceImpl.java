@@ -250,10 +250,6 @@ public class UserServiceImpl implements IUserService {
         return ResponseEntity.ok().build();
     }
 
-    @Override
-    public ResponseEntity<?> getAllUsers() {
-        return null;
-    }
 
     @Override
     public ResponseEntity<?> createUser(UserDto user) {
