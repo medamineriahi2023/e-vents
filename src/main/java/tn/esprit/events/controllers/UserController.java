@@ -38,7 +38,7 @@ public class UserController {
     }
 
 
-    @GetMapping(path = "users/permissions")
+    @GetMapping(path = "/roles/permissions")
     public ResponseEntity<?> getAllPermissions() {
         return userService.getPermissions();
     }
