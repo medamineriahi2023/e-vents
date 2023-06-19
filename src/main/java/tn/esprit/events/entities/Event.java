@@ -21,6 +21,7 @@ public class Event {
     private String name;
     private LocalDate dateDebutEvent;
     private LocalDate dateFinEvent;
+    @Enumerated(EnumType.STRING)
     private Type type;
     private Visibility visibility;
     @ManyToOne(fetch = FetchType.LAZY)

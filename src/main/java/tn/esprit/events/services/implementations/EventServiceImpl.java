@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.CategoryDto;
 import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.EventDto;
+import tn.esprit.events.entities.Event;
+import tn.esprit.events.entities.Type;
 import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.EventRepository;
 import tn.esprit.events.services.ICommentService;
@@ -36,5 +38,46 @@ public class EventServiceImpl implements IEventService {
     public EventDto getById(Long id) {
         return EventDto.entityToDto(eventRepository.findById(id).get());
 
+    }
+
+    @Override
+    public boolean isPresentiel(EventDto eventDto) {
+        return eventDto.getType() == Type.PRESENTIEL;
+    }
+
+    @Override
+    public List<EventDto> getEventsPresentiel() {
+        List<Event> events = eventRepository.getEventsByType(Type.PRESENTIEL);
+        return EventDto.entitiesToDtos(events);
+    }
+
+    @Override
+    public List<EventDto> getEventsOnline() {
+        List<Event> events = eventRepository.getEventsByType(Type.ONLINE);
+        return EventDto.entitiesToDtos(events);
+    }
+
+    @Override
+    public List<EventDto> searchEventsByCategory(Long categoryId) {
+        List<Event> events = eventRepository.getEventsByCategoryId(categoryId);
+        return EventDto.entitiesToDtos(events);
+    }
+
+    @Override
+    public List<EventDto> searchEventsByName(String eventName) {
+        List<Event> events = eventRepository.getEventsByNameContaining(eventName);
+        return EventDto.entitiesToDtos(events);
+    }
+
+    @Override
+    public List<EventDto> searchEventsByLocation(String locationName) {
+        List<Event> events = eventRepository.getEventsByLocationNameContaining(locationName);
+        return EventDto.entitiesToDtos(events);
+    }
+
+    @Override
+    public List<EventDto> searchEventsByOrganizer(String organizerId) {
+        List<Event> events = eventRepository.getEventsByOrganizerId(organizerId);
+        return EventDto.entitiesToDtos(events);
     }
 }
