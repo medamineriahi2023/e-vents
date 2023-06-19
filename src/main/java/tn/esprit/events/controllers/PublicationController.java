@@ -1,10 +1,10 @@
 package tn.esprit.events.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.events.controllers.abstracts.AbstractCrudController;
 import tn.esprit.events.dtos.PublicationDto;
+import tn.esprit.events.dtos.ReactDto;
 import tn.esprit.events.services.IPublicationService;
 
 import java.util.List;
@@ -29,4 +29,11 @@ public class PublicationController implements AbstractCrudController<Publication
     public PublicationDto update(PublicationDto publicationDto) {
         return iPublicationService.update(publicationDto);
     }
+
+
+    @PutMapping("{publicationId}")
+    public PublicationDto update (@RequestBody ReactDto reactDto , @PathVariable("publicationId") String  publicationId){
+        return iPublicationService.changePublicationReacts(reactDto,publicationId);
+    }
+
 }
