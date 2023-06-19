@@ -45,7 +45,9 @@ public class PublicationServiceImpl implements IPublicationService {
         } else {
             React newReact = new React();
             newReact.setLiked(reactDto.isLiked());
+
             newReact.setUserId(reactDto.getUser().getId());
+
         }
         return null;
     }
