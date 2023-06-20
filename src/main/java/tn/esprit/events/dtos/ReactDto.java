@@ -1,14 +1,9 @@
 package tn.esprit.events.dtos;
 
 import lombok.*;
-import org.apache.catalina.LifecycleState;
 import tn.esprit.events.entities.React;
-import tn.esprit.events.userUtils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
 

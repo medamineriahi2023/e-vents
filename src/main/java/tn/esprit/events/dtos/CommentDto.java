@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tn.esprit.events.entities.Comment;
-import tn.esprit.events.userUtils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
 import java.util.List;
 import java.util.stream.Collectors;

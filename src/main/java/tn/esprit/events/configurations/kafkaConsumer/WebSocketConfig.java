@@ -2,6 +2,7 @@ package tn.esprit.events.configurations.kafkaConsumer;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -18,6 +19,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // ui client will use this to connect to the server
-        registry.addEndpoint("/ws-notification").setAllowedOrigins("http://localhost:4200", "http://eventsapp.ddns.net").withSockJS();
+        registry.addEndpoint("/ws-notification").setAllowedOrigins("http://localhost:4200/","http://localhost:4200/security", "http://eventsapp.ddns.net").withSockJS();
     }
 }

@@ -3,7 +3,7 @@ package tn.esprit.events.dtos;
 
 import lombok.*;
 import tn.esprit.events.entities.Message;
-import tn.esprit.events.userUtils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,8 +1,0 @@
-{
-  "realm": "esprit",
-  "auth-server-url": "http://localhost:8180/",
-  "ssl-required": "external",
-  "resource": "e-vents",
-  "public-client": true,
-  "confidential-port": 0
-}

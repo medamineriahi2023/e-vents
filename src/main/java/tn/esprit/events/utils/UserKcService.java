@@ -1,4 +1,4 @@
-package tn.esprit.events.userUtils;
+package tn.esprit.events.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -41,7 +41,7 @@ public class UserKcService {
 
     public static UserDto userRepresentationToDto(UserRepresentation userRepresentation){
         return new UserDto(userRepresentation.getId(), userRepresentation.getFirstName(), userRepresentation.getLastName(), userRepresentation.getUsername(),
-                userRepresentation.getEmail(),iLocationService.getById(Long.parseLong(userRepresentation.getAttributes().get("locationId").get(0))));
+                userRepresentation.getEmail(),iLocationService.getById(Long.parseLong(userRepresentation.getAttributes().get("locationId").get(0))),userRepresentation.isEnabled(),null,null);
     }
 
     public static UserRepresentation dtoToUserRepresentation(UserDto userDto){
