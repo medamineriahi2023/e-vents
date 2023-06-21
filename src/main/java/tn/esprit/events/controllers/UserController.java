@@ -49,7 +49,7 @@ public class UserController {
         return userService.updateRole(role);
     }
 
-    @DeleteMapping(path = "roles/{roleName}")
+    @DeleteMapping(path = "/roles/{roleName}")
     public ResponseEntity<?> deleteRole(@PathVariable(value = "roleName") String roleName) {
         return userService.deleteRole(roleName);
     }
