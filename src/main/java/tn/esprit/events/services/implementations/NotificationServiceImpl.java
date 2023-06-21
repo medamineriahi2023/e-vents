@@ -23,7 +23,6 @@ public class NotificationServiceImpl implements INotificationService {
         NotificationDto notificationDto1 = NotificationDto.entityToDto(notificationRepository.save(NotificationDto.dtoToEntity(notificationDto)));
         kafkaNotificationService.send(notificationDto1);
         return notificationDto1;
-
     }
 
     @Override

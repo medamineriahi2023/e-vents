@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.dtos.MessageDto;
+import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.MessageRepository;
 import tn.esprit.events.services.ICommentService;
@@ -35,5 +36,11 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public MessageDto getById(Long id) {
         return MessageDto.entityToDto(messageRepository.findById(id).get());
+    }
+
+    @Override
+    public List<MessageDto> getByReceiver(String userId) {
+        List<MessageDto> messageDtos = this.messageRepository.findByIdReceiver(userId) ;
+        return messageDtos ;
     }
 }
