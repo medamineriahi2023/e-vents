@@ -8,6 +8,6 @@ import tn.esprit.events.entities.Message;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<MessageDto> findByIdReceiver(String idReceiver);
+    List<Message> findByIdReceiver(String idReceiver);
 
 }
