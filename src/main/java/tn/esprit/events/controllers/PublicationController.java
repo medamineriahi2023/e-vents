@@ -31,7 +31,7 @@ public class PublicationController implements AbstractCrudController<Publication
     }
 
 
-    @PutMapping("{publicationId}")
+    @PutMapping("/{publicationId}")
     public PublicationDto update (@RequestBody ReactDto reactDto , @PathVariable("publicationId") String  publicationId){
         return iPublicationService.changePublicationReacts(reactDto,publicationId);
     }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PublicationRepository extends JpaRepository<Publication, Long> {
-    List<Publication> getPublicationByType(Topic topic);
-    List<Publication> getPublicationByDate (LocalDate date) ;
+   // List<Publication> getPublicationByType(Topic topic);
+    //List<Publication> getPublicationByDate (LocalDate date) ;
 
 }
