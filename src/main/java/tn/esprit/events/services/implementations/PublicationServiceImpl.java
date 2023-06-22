@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.PublicationDto;
 import tn.esprit.events.dtos.ReactDto;
+import tn.esprit.events.entities.Publication;
 import tn.esprit.events.entities.React;
+import tn.esprit.events.entities.Topic;
 import tn.esprit.events.repositories.PublicationRepository;
 import tn.esprit.events.services.IPublicationService;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,4 +54,5 @@ public class PublicationServiceImpl implements IPublicationService {
         }
         return null;
     }
+
 }
