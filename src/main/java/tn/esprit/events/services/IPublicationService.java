@@ -9,4 +9,6 @@ public interface IPublicationService extends ICrudService<PublicationDto> {
 
 
      Publication createFeedbackPublication(Publication publication);
+     PublicationDto addCommentToPublication (CommentDto commentDto, String publicationId);
+
 }

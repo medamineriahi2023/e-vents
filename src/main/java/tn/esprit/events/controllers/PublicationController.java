@@ -2,11 +2,9 @@ package tn.esprit.events.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.events.controllers.abstracts.AbstractCrudController;
+import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.PublicationDto;
 import tn.esprit.events.entities.Publication;
 import tn.esprit.events.services.IPublicationService;
@@ -40,6 +38,13 @@ public class PublicationController implements AbstractCrudController<Publication
     public ResponseEntity<Publication> createFeedbackPublication(@RequestBody Publication publication) {
         Publication createdPublication = iPublicationService.createFeedbackPublication(publication);
         return ResponseEntity.ok(createdPublication);
+    }
+    @PostMapping("/{publicationId}/comments")
+    public ResponseEntity<PublicationDto> addCommentToPublication(
+            @PathVariable String publicationId,
+            @RequestBody CommentDto commentDto) {
+        PublicationDto updatedPublication = iPublicationService.addCommentToPublication(commentDto, publicationId);
+        return ResponseEntity.ok(updatedPublication);
     }
 }
 
