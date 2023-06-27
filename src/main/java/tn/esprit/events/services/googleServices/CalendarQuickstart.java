@@ -69,7 +69,10 @@ public class CalendarQuickstart {
         return credential;
     }
 
+
     public static void main(String... args) throws IOException, GeneralSecurityException {
+
+        List<String> participants = List.of("e@e.tn","e@e.tn","e@e.tn","e@e.tn");
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service =
