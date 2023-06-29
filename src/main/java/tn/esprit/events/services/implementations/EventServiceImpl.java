@@ -3,16 +3,14 @@ package tn.esprit.events.services.implementations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import tn.esprit.events.dtos.CategoryDto;
-import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.EventDto;
+import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.entities.Event;
-import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.EventRepository;
-import tn.esprit.events.services.ICommentService;
 import tn.esprit.events.services.IEventService;
 
-import java.util.Date;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +18,20 @@ import java.util.List;
 public class EventServiceImpl implements IEventService {
 
     private final EventRepository eventRepository;
+    private final UserDto userDto;
     @Override
     public EventDto save(EventDto eventDto) {
+        Assert.isNull(eventDto, "Event must have details");
+        Assert.isNull(eventDto.getName(), "Your event must have a name");
+        Assert.hasText(eventDto.getName(), "Your event must have a name");
+        Assert.isNull(eventDto.getDateDebutEvent(), "Your event must have a start date");
+        Assert.isNull(eventDto.getDateFinEvent(),"Your event must have and end date");
+        Assert.isNull(eventDto.getVisibility(), "Is your event public or private? Please choose an option!");
+        Assert.isNull(eventDto.getOrganizer().getId(), "Error loading organizer");
+        Assert.isNull(eventDto.getLocation(),"Please set the location for your event");
+        eventDto.setParticipants(new ArrayList<UserDto>());
+        eventDto.setStaffs(new ArrayList<UserDto>());
+        eventDto.setArchived(false);
         return EventDto.entityToDto(eventRepository.save(EventDto.dtoToEntity(eventDto)));
     }
 
@@ -32,58 +42,50 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public EventDto update(EventDto eventDto) {
+        Assert.isNull(eventDto, "Event is null");
+        Assert.isNull(eventDto.getName(), "Event name is null");
         return EventDto.entityToDto(eventRepository.save(EventDto.dtoToEntity(eventDto)));
     }
 
     @Override
     public EventDto getById(Long id) {
         return EventDto.entityToDto(eventRepository.findById(id).get());
-
     }
 
     @Override
-    public List<Event> getAllEvents() {
-        return null;
+    @Transactional
+    public EventDto archiveEvent(String eventId) {
+        EventDto eventDto = this.getById(Long.parseLong(eventId));
+        eventDto.setArchived(true);
+        return eventDto;
     }
 
     @Override
-    public Event createEvent(Event event) {
-        return null;
+    @Transactional
+    public EventDto rescheduleEvent(EventDto eventDto){
+        EventDto updated = this.getById(eventDto.getId());
+
+        return eventDto;
     }
 
     @Override
-    public Event updateEvent(long id, Event event) {
-        return null;
+    @Transactional
+    public EventDto addParticipant(UserDto userDto, String eventId) {
+        EventDto eventDto = this.getById(Long.parseLong(eventId));
+        eventDto.getParticipants().add(userDto);
+        return eventDto;
     }
 
     @Override
-    public Event getEventById(long id) {
-
+    public EventDto addStaff(UserDto userDto, String eventId) {
+        EventDto eventDto = this.getById(Long.parseLong(eventId));
+        eventDto.getStaffs().add(userDto);
+        return eventDto;
     }
 
     @Override
-    public Event archiveEvent(long id) {
-        return null;
-    }
-
-    @Override
-    public Event rescheduleEvent(long id, Date dateDebut, Date dateFin) {
-        return null;
-    }
-
-    @Override
-    public Event createOnSiteEvent(Event event) {
-        Assert.isNull(event, "Event must have details");
-        Assert.isNull(event.getName(), "Your event must have a name");
-        Assert.hasText(event.getName(), "Your event must have a name");
-        Assert.isNull(event.getDateDebutEvent(), "Your event must have a start date");
-        Assert.isNull(event.getDateFinEvent(),"Your event must have and end date");
-        Assert.isNull(event.getVisibility(), "Is your event public or private? Please choose an option!");
-        Assert.isNull(event.getOrganizerId(), "Error loading organizer");
-        Assert.isNull(event.getLocation(),"Please set the location for your event");
-        event.setParticipants("");
-        event.setStaffs("");
-        event.setArchived(false);
-        return event;
+    public List<EventDto> identifyCloseEvent(String location) {
+        List<Event> events = this.eventRepository.findEventsByLocationGovName(location);
+        return EventDto.entitiesToDtos(events);
     }
 }
