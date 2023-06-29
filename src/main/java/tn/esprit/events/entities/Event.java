@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,5 +48,7 @@ public class Event {
     private String rue;
     private  String zipCode;
 
+    @OneToMany
+    private List<Publication> publications;
 
 }

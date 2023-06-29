@@ -3,11 +3,9 @@ package tn.esprit.events.entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +24,8 @@ public class Message {
     private LocalDate date;
     private boolean seen;
     private boolean archived;
+    private String text;
 
-
+    @OneToOne
+    private React react;
 }

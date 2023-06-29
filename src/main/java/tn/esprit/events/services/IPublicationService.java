@@ -8,7 +8,6 @@ import tn.esprit.events.services.abstracts.ICrudService;
 public interface IPublicationService extends ICrudService<PublicationDto> {
 
 
-     Publication createFeedbackPublication(Publication publication);
-     PublicationDto addCommentToPublication (CommentDto commentDto, String publicationId);
+     PublicationDto createFeedbackPublication(PublicationDto publicationDto);
 
 }

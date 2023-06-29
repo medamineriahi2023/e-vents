@@ -43,6 +43,7 @@ public class EventDto {
     private String locationName;
     private String rue;
     private  String zipCode;
+    private List<PublicationDto> publications;
 
 
     public static EventDto entityToDto(Event event){
@@ -52,6 +53,7 @@ public class EventDto {
                 category(CategoryDto.entityToDto(event.getCategory())).organizer(UserKcService.findById(event.getOrganizerId())).
                 staffs(UserKcService.splitAndReturn(event.getStaffs())).
                 participants(UserKcService.splitAndReturn(event.getParticipants())).backGroundImage(event.getBackGroundImage()).eventImage(event.getEventImage()).
+                publications(event.getPublications() != null ? PublicationDto.entitiesToDtos(event.getPublications()) : null ).
                 video(event.getVideo()).archived(event.isArchived()).description(event.getDescription()).location(LocationDto.entityToDto(event.getLocation())).
                 locationName(event.getLocationName()).rue(event.getRue()).zipCode(event.getZipCode()).build();
     }
@@ -62,6 +64,7 @@ public class EventDto {
                 category(CategoryDto.dtoToEntity(eventDto.getCategory())).organizerId(eventDto.getOrganizer().getId()).
                 staffs(eventDto.getStaffs().stream().map(UserDto::getId).collect(Collectors.joining(","))).
                 participants(eventDto.getParticipants().stream().map(UserDto::getId).collect(Collectors.joining(","))).
+                publications(eventDto.getPublications() != null ? PublicationDto.dtosToEntities(eventDto.getPublications()) : null ).
                 backGroundImage(eventDto.getBackGroundImage()).eventImage(eventDto.getEventImage()).
                 video(eventDto.getVideo()).archived(eventDto.isArchived()).description(eventDto.getDescription()).
                 location(LocationDto.dtoToEntity(eventDto.getLocation())).locationName(eventDto.getLocationName()).rue(eventDto.getRue()).
