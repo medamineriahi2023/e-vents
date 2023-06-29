@@ -6,5 +6,4 @@ import tn.esprit.events.services.abstracts.ICrudService;
 
 public interface INotificationService extends ICrudService<NotificationDto> {
 
-
 }

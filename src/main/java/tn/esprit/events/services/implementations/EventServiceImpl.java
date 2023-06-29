@@ -63,9 +63,9 @@ public class EventServiceImpl implements IEventService {
     @Override
     @Transactional
     public EventDto rescheduleEvent(EventDto eventDto){
-        EventDto updated = this.getById(eventDto.getId());
+        EventDto updatedEventDto = this.getById(eventDto.getId());
 
-        return eventDto;
+        return updatedEventDto;
     }
 
     @Override
