@@ -1,4 +1,4 @@
-package tn.esprit.events.userUtils;
+package tn.esprit.events.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.idm.UserRepresentation;

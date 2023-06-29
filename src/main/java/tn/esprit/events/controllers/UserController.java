@@ -32,13 +32,18 @@ public class UserController {
         return userService.resetUserPassword(userId, password);
     }
 
+    @PostMapping(path = "/token")
+    public String getToken() {
+        return userService.getToken();
+    }
+
     @PostMapping(path = "/roles/{roleName}")
     public ResponseEntity<?> createRole(@PathVariable(value = "roleName") String roleName) {
         return userService.createRole(roleName);
     }
 
 
-    @GetMapping(path = "users/permissions")
+    @GetMapping(path = "/roles/permissions")
     public ResponseEntity<?> getAllPermissions() {
         return userService.getPermissions();
     }
@@ -49,7 +54,7 @@ public class UserController {
         return userService.updateRole(role);
     }
 
-    @DeleteMapping(path = "roles/{roleName}")
+    @DeleteMapping(path = "/roles/{roleName}")
     public ResponseEntity<?> deleteRole(@PathVariable(value = "roleName") String roleName) {
         return userService.deleteRole(roleName);
     }

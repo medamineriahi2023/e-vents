@@ -2,7 +2,7 @@ package tn.esprit.events.dtos;
 
 import lombok.*;
 import tn.esprit.events.entities.*;
-import tn.esprit.events.userUtils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
 import javax.persistence.*;
 import java.time.LocalDate;
