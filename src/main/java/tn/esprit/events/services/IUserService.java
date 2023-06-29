@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IUserService {
 
+    String getToken();
+
     ResponseEntity<?> resetUserPassword(String userId, String newPassword);
 
 
