@@ -8,7 +8,8 @@ import tn.esprit.events.services.ICommentService;
 import tn.esprit.events.services.IEventService;
 import tn.esprit.events.services.IPublicationService;
 import tn.esprit.events.services.IReactService;
-import tn.esprit.events.userUtils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
 
 import java.util.List;
@@ -54,8 +55,9 @@ public class NotificationDto {
         return Notification.builder().id(notificationDto.getId()).type(notificationDto.getType())
                 .senderId(notificationDto.getSender().getId()).idEvent(notificationDto.getEventDto().getId())
                 .receiverId(notificationDto.getReceiver().getId())
-                .commentId(notificationDto.getComment().getId())
-                .publicationId(notificationDto.getPublication().getId())
+                .commentId(notificationDto.getComment() != null ? notificationDto.getComment().getId() : null)
+                .publicationId(notificationDto.getPublication() != null ? notificationDto.getPublication().getId() : null)
+                .reactId(notificationDto.getReact() != null ? notificationDto.getReact().getId() : null)
                 .build();
     }
 

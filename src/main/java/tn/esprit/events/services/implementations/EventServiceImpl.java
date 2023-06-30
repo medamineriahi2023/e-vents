@@ -77,6 +77,7 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
+    @Transactional
     public EventDto addStaff(UserDto userDto, String eventId) {
         EventDto eventDto = this.getById(Long.parseLong(eventId));
         eventDto.getStaffs().add(userDto);
