@@ -1,16 +1,12 @@
 package tn.esprit.events.services.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import tn.esprit.events.dtos.CategoryDto;
-import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.entities.Category;
 import tn.esprit.events.repositories.CategotyRepository;
-import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.services.ICategoryService;
-import tn.esprit.events.services.ICommentService;
 
 import java.lang.reflect.Field;
 import java.util.List;

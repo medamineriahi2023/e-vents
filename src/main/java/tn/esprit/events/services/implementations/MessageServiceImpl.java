@@ -2,12 +2,8 @@ package tn.esprit.events.services.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tn.esprit.events.dtos.CommentDto;
-import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.dtos.MessageDto;
-import tn.esprit.events.repositories.CommentRepository;
 import tn.esprit.events.repositories.MessageRepository;
-import tn.esprit.events.services.ICommentService;
 import tn.esprit.events.services.IMessageService;
 
 import java.util.List;
