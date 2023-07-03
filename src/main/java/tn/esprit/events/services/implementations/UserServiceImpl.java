@@ -17,11 +17,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements IUserService {
     @Override
-    public String getToken() {
-        return KeycloakConfig.getInstance().tokenManager().getAccessTokenString();
-    }
-
-    @Override
     public ResponseEntity<?> resetUserPassword(String userId, String newPassword) {
         Keycloak keycloak = KeycloakConfig.getInstance();
         UserResource userResource = keycloak.realm(KeycloakConfig.realm).users().get(userId);

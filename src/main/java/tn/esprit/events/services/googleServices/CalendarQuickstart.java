@@ -131,4 +131,3 @@ public class CalendarQuickstart {
         System.out.printf("Event created: %s\n", event.getHangoutLink());
     }
 }
-

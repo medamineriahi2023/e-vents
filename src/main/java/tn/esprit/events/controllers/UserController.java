@@ -31,11 +31,6 @@ public class UserController {
         return userService.resetUserPassword(userId, password);
     }
 
-    @PostMapping(path = "/token")
-    public String getToken() {
-        return userService.getToken();
-    }
-
     @PostMapping(path = "/roles/{roleName}")
     public ResponseEntity<?> createRole(@PathVariable(value = "roleName") String roleName) {
         return userService.createRole(roleName);
