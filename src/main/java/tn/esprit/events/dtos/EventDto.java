@@ -46,26 +46,45 @@ public class EventDto {
 
 
     public static EventDto entityToDto(Event event){
-        return EventDto.builder().id(event.getId()).name(event.getName()).
+
+        return EventDto.builder().id(event.getId()).
+                name(event.getName()).
                 dateDebutEvent(event.getDateDebutEvent()).dateFinEvent(event.getDateFinEvent()).
                 type(event.getType()).visibility(event.getVisibility()).
-                category(CategoryDto.entityToDto(event.getCategory())).organizer(UserKcService.findById(event.getOrganizerId())).
-                staffs(UserKcService.splitAndReturn(event.getStaffs())).
-                participants(UserKcService.splitAndReturn(event.getParticipants())).backGroundImage(event.getBackGroundImage()).eventImage(event.getEventImage()).
-                video(event.getVideo()).archived(event.isArchived()).description(event.getDescription()).location(LocationDto.entityToDto(event.getLocation())).
-                locationName(event.getLocationName()).rue(event.getRue()).zipCode(event.getZipCode()).build();
+                category(CategoryDto.entityToDto(event.getCategory())).
+                organizer(UserKcService.findById(event.getOrganizerId())).
+                archived(event.isArchived()).
+                staffs(event.getStaffs() != null ? UserKcService.splitAndReturn(event.getStaffs()): null).
+                participants(event.getParticipants() != null ? UserKcService.splitAndReturn(event.getParticipants()): null).
+                backGroundImage(event.getBackGroundImage() != null ? event.getBackGroundImage() : null).
+                eventImage(event.getEventImage() != null ? event.getEventImage() : null).
+                video(event.getVideo() != null ? event.getVideo() : null ).
+                description(event.getDescription() != null ? event.getDescription(): null).
+                location(LocationDto.entityToDto(event.getLocation())).
+                locationName(event.getLocationName() != null ? event.getLocationName() : null).
+                rue(event.getRue() != null ? event.getRue() : null).
+                zipCode(event.getZipCode() != null ? event.getZipCode() : null).build();
     }
 
     public static Event dtoToEntity(EventDto eventDto){
-        return Event.builder().id(eventDto.getId()).name(eventDto.getName()).dateDebutEvent(eventDto.getDateDebutEvent()).
-                dateFinEvent(eventDto.getDateFinEvent()).type(eventDto.getType()).visibility(eventDto.getVisibility()).
-                category(CategoryDto.dtoToEntity(eventDto.getCategory())).organizerId(eventDto.getOrganizer().getId()).
-                staffs(eventDto.getStaffs().stream().map(UserDto::getId).collect(Collectors.joining(","))).
-                participants(eventDto.getParticipants().stream().map(UserDto::getId).collect(Collectors.joining(","))).
-                backGroundImage(eventDto.getBackGroundImage()).eventImage(eventDto.getEventImage()).
-                video(eventDto.getVideo()).archived(eventDto.isArchived()).description(eventDto.getDescription()).
-                location(LocationDto.dtoToEntity(eventDto.getLocation())).locationName(eventDto.getLocationName()).rue(eventDto.getRue()).
-                zipCode(eventDto.getZipCode()).build();
+        return Event.builder().id(eventDto.getId()).
+                name(eventDto.getName()).
+                dateDebutEvent(eventDto.getDateDebutEvent()).dateFinEvent(eventDto.getDateFinEvent()).
+                type(eventDto.getType()).
+                visibility(eventDto.getVisibility()).
+                category(CategoryDto.dtoToEntity(eventDto.getCategory())).
+                organizerId(eventDto.getOrganizer().getId()).
+                archived(eventDto.isArchived()).
+                staffs(eventDto.getStaffs() != null ? eventDto.getStaffs().stream().map(UserDto::getId).collect(Collectors.joining(",")) : null).
+                participants(eventDto.getParticipants() != null ? eventDto.getParticipants().stream().map(UserDto::getId).collect(Collectors.joining(",")) : null).
+                backGroundImage(eventDto.getBackGroundImage() != null ? eventDto.getBackGroundImage() : null).
+                eventImage(eventDto.getEventImage() != null ? eventDto.getEventImage() : null).
+                video(eventDto.getVideo() != null ? eventDto.getVideo() : null).
+                description(eventDto.getDescription() != null ? eventDto.getDescription() : null).
+                location(LocationDto.dtoToEntity(eventDto.getLocation())).
+                locationName(eventDto.getLocationName() != null ? eventDto.getLocationName() : null).
+                rue(eventDto.getRue() != null ? eventDto.getRue() : null ).
+                zipCode(eventDto.getZipCode() != null ? eventDto.getZipCode() : null).build();
     }
 
     public static List<EventDto> entitiesToDtos(List<Event> events){
