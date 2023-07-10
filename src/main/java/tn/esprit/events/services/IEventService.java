@@ -1,5 +1,6 @@
 package tn.esprit.events.services;
 
+import org.springframework.http.ResponseEntity;
 import tn.esprit.events.dtos.EventDto;
 import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.services.abstracts.ICrudService;
@@ -18,5 +19,8 @@ public interface IEventService extends ICrudService<EventDto> {
 
     List<EventDto> identifyCloseEvent(String userId);
 
+    Boolean canAddStaff(EventDto eventDto, UserDto userDto);
+    Boolean canAddParticipant(EventDto eventDto, UserDto userDto);
 
+    Boolean eventDoesExist(Long eventId);
 }
