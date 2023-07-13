@@ -65,4 +65,9 @@ public class EventController implements AbstractCrudController<EventDto> {
     List<EventDto> identifyCloseEvent(@PathVariable("userId")String userId){
         return iEventService.identifyCloseEvent(userId);
     }
+
+    @GetMapping("organizer/{organizerId}")
+    List<EventDto> getEventsOfOrganizer(@PathVariable("organizerId")String organizerId){
+        return iEventService.getEventsOfOrganizer(organizerId);
+    }
 }

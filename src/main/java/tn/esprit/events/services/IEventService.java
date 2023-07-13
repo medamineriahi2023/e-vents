@@ -23,4 +23,8 @@ public interface IEventService extends ICrudService<EventDto> {
     Boolean canAddParticipant(EventDto eventDto, UserDto userDto);
 
     Boolean eventDoesExist(Long eventId);
+
+    List<EventDto> getEventsOfOrganizer(String organizerId);
+
+
 }

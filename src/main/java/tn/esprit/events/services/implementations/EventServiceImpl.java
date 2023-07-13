@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import tn.esprit.events.dtos.EventDto;
+import tn.esprit.events.dtos.Role;
 import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.entities.Event;
 import tn.esprit.events.repositories.EventRepository;
 import tn.esprit.events.services.IEventService;
+import tn.esprit.events.utils.UserKcService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.List;
 public class EventServiceImpl implements IEventService {
 
     private final EventRepository eventRepository;
+
+    private final UserServiceImpl userServiceImpl;
 
     @Override
     public EventDto save(EventDto eventDto) {
@@ -36,8 +40,7 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public EventDto update(EventDto eventDto) {
-        Assert.isNull(eventDto, "Event is null");
-        Assert.isNull(eventDto.getName(), "Event name is null");
+
         return EventDto.entityToDto(eventRepository.save(EventDto.dtoToEntity(eventDto)));
     }
 
@@ -117,6 +120,17 @@ public class EventServiceImpl implements IEventService {
     @Override
     public Boolean eventDoesExist(Long eventId) {
         return eventRepository.findById(eventId).get() != null;
+    }
+
+    @Override
+    public List<EventDto> getEventsOfOrganizer(String organizerId) {
+        return EventDto.entitiesToDtos(eventRepository.findByOrganizerId(organizerId));
+        //UserDto organizer = UserKcService.findById(organizerId);
+        //Role role = organizer.getRoles().stream().filter(r -> r.getName().equals("organizer")).findFirst().get();
+        //if(role != null){
+        //    return EventDto.entitiesToDtos(eventRepository.findByOrganizerId(organizerId));
+        //}
+        //return null;
     }
 
 
