@@ -2,6 +2,7 @@ package tn.esprit.events.services;
 
 import org.springframework.http.ResponseEntity;
 import tn.esprit.events.dtos.EventDto;
+import tn.esprit.events.dtos.PublicationDto;
 import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.services.abstracts.ICrudService;
 
@@ -9,6 +10,8 @@ import java.util.List;
 
 
 public interface IEventService extends ICrudService<EventDto> {
+
+    EventDto addFeedbackPublication(PublicationDto publicationDto , String eventId) ;
 
 
     EventDto archiveEvent(String id);

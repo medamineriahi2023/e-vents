@@ -1,10 +1,10 @@
 package tn.esprit.events.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.events.controllers.abstracts.AbstractCrudController;
 import tn.esprit.events.dtos.MessageDto;
+import tn.esprit.events.dtos.ReactDto;
 import tn.esprit.events.services.IMessageService;
 
 import java.util.List;
@@ -29,4 +29,26 @@ public class MessageController implements AbstractCrudController<MessageDto> {
     public MessageDto update(MessageDto messageDto) {
         return iMessageService.update(messageDto);
     }
+
+    @GetMapping("/message")
+    public List<MessageDto> getUserMessages(@PathVariable("userId") String userId){
+        List<MessageDto> messages = this.iMessageService.getByReceiver(userId) ;
+        return messages ;
+    }
+
+    @PostMapping("/{messageId}/react")
+    public MessageDto addReactToMessage(@RequestBody ReactDto react, @PathVariable("messageId")String messageId){
+        MessageDto messageDto  = this.iMessageService.setMessageReact(react,messageId);
+        return messageDto;
+    }
+
+    @PostMapping("/{messageId}/seen")
+    public MessageDto isSeen (@PathVariable("messageId")String messageId){
+        MessageDto messageDto  = this.iMessageService.setSeen(messageId);
+        return messageDto;
+    }
+
+
 }
+
+

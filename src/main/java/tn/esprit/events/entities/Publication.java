@@ -27,10 +27,12 @@ public class Publication {
     @Column(length = 10000)
     private String users;
     private String creatorId;
-    @OneToMany(cascade = {CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<React> reacts;
-    @OneToMany(cascade = {CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Comment> comments;
+
+
 
 
 }

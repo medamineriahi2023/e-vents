@@ -43,6 +43,7 @@ public class EventDto {
     private String locationName;
     private String rue;
     private  String zipCode;
+    private List<PublicationDto> publications;
 
 
     public static EventDto entityToDto(Event event){

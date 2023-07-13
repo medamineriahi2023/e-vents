@@ -22,9 +22,6 @@ import java.util.List;
 public class EventServiceImpl implements IEventService {
 
     private final EventRepository eventRepository;
-
-    private final UserServiceImpl userServiceImpl;
-
     @Override
     public EventDto save(EventDto eventDto) {
         Assert.hasText(eventDto.getName(), "Your event must have a name");
