@@ -28,8 +28,14 @@ public class MessageDto {
 
 
     public static MessageDto entityToDto(Message message){
-        return MessageDto.builder().id(message.getId()).sender(UserKcService.findById(message.getIdSender())).
-                receiver(UserKcService.findById(message.getIdReceiver())).date(message.getDate()).seen(message.isSeen()).
+        System.out.println(message.getIdSender());
+        System.out.println(message.getIdReceiver());
+        return MessageDto.builder().
+                id(message.getId()).
+                sender(UserKcService.findById(message.getIdSender())).
+                receiver(UserKcService.findById(message.getIdReceiver())).
+                date(message.getDate()).
+                seen(message.isSeen()).
                 archived(message.isArchived()).
                 react(message.getReact() != null ?  ReactDto.entityToDto(message.getReact()) : null).
         text(message.getText()).

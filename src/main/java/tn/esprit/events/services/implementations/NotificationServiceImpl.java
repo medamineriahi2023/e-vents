@@ -22,10 +22,6 @@ public class NotificationServiceImpl implements INotificationService {
     private final IPublicationService publicationService;
     @Override
     public NotificationDto save(NotificationDto notificationDto) {
-        NotificationDto not = new NotificationDto(eventService);
-        NotificationDto notificationDto1 = NotificationDto.entityToDto(notificationRepository.save(NotificationDto.dtoToEntity(notificationDto)));
-        kafkaNotificationService.send(notificationDto1);
-        return notificationDto1;
         NotificationDto newNotification = NotificationDto.entityToDto(notificationRepository.save(NotificationDto.dtoToEntity(notificationDto)));
         kafkaNotificationService.send(newNotification);
         switch (newNotification.getType()){

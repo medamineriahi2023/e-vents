@@ -23,6 +23,7 @@ import java.util.List;
 public class PublicationController implements AbstractCrudController<PublicationDto> {
 
     private final IPublicationService iPublicationService;
+    private final ICommentService iCommentService;
     @Override
     public PublicationDto save(PublicationDto publicationDto) {
         return iPublicationService.save(publicationDto);

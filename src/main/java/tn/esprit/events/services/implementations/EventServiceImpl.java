@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import tn.esprit.events.dtos.EventDto;
+import tn.esprit.events.dtos.PublicationDto;
 import tn.esprit.events.dtos.Role;
 import tn.esprit.events.dtos.UserDto;
 import tn.esprit.events.entities.Event;
@@ -44,6 +45,11 @@ public class EventServiceImpl implements IEventService {
     @Override
     public EventDto getById(Long id) {
         return EventDto.entityToDto(eventRepository.findById(id).get());
+    }
+
+    @Override
+    public EventDto addFeedbackPublication(PublicationDto publicationDto, String eventId) {
+        return null;
     }
 
     @Override

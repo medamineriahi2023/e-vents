@@ -2,6 +2,7 @@ package tn.esprit.events.services.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import tn.esprit.events.dtos.MessageDto;
 import tn.esprit.events.dtos.*;
 import tn.esprit.events.entities.Message;
@@ -21,7 +22,7 @@ public class MessageServiceImpl implements IMessageService {
     private final MessageRepository messageRepository;
     private final IReactService iReactService;
     @Override
-    public MessageDto save(MessageDto messageDto) {
+    public MessageDto save(@RequestBody MessageDto messageDto) {
         return MessageDto.entityToDto(messageRepository.save(MessageDto.dtoToEntity(messageDto)));
     }
 

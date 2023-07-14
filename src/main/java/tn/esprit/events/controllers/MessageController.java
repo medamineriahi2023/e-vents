@@ -16,7 +16,7 @@ public class MessageController implements AbstractCrudController<MessageDto> {
 
     private final IMessageService iMessageService;
     @Override
-    public MessageDto save(MessageDto messageDto) {
+    public MessageDto save(@RequestBody MessageDto messageDto) {
         return iMessageService.save(messageDto);
     }
 
@@ -30,7 +30,7 @@ public class MessageController implements AbstractCrudController<MessageDto> {
         return iMessageService.update(messageDto);
     }
 
-    @GetMapping("/message")
+    @GetMapping("{userId}/messages")
     public List<MessageDto> getUserMessages(@PathVariable("userId") String userId){
         List<MessageDto> messages = this.iMessageService.getByReceiver(userId) ;
         return messages ;
