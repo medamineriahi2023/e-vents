@@ -3,18 +3,16 @@ package tn.esprit.events.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tn.esprit.events.controllers.abstracts.AbstractController;
-import tn.esprit.events.dtos.CommentDto;
+import tn.esprit.events.controllers.abstracts.AbstractCrudController;
 import tn.esprit.events.dtos.NotificationDto;
-import tn.esprit.events.services.ICommentService;
 import tn.esprit.events.services.INotificationService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("notifivation")
+@RequestMapping("notification")
 @RequiredArgsConstructor
-public class NotificationController implements AbstractController<NotificationDto> {
+public class NotificationController implements AbstractCrudController<NotificationDto> {
 
     private final INotificationService iNotificationService;
     @Override

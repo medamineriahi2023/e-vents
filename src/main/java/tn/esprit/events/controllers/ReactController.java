@@ -3,10 +3,8 @@ package tn.esprit.events.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tn.esprit.events.controllers.abstracts.AbstractController;
-import tn.esprit.events.dtos.CommentDto;
+import tn.esprit.events.controllers.abstracts.AbstractCrudController;
 import tn.esprit.events.dtos.ReactDto;
-import tn.esprit.events.services.ICommentService;
 import tn.esprit.events.services.IReactService;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("react")
 @RequiredArgsConstructor
-public class ReactController implements AbstractController<ReactDto> {
+public class ReactController implements AbstractCrudController<ReactDto> {
 
     private final IReactService iReactService;
     @Override
@@ -31,4 +29,6 @@ public class ReactController implements AbstractController<ReactDto> {
     public ReactDto update(ReactDto reactDto) {
         return iReactService.update(reactDto);
     }
+
+
 }

@@ -7,4 +7,5 @@ public interface ICrudService<T> {
     T save(T t);
     List<T> getAll();
     T update(T t);
+    T getById(Long id);
 }

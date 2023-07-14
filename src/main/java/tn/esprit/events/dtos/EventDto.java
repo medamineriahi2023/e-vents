@@ -3,8 +3,8 @@ package tn.esprit.events.dtos;
 
 import lombok.*;
 import tn.esprit.events.entities.*;
+import tn.esprit.events.utils.UserKcService;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@ToString
 public class EventDto {
 
 
@@ -23,16 +23,15 @@ public class EventDto {
     private LocalDate dateFinEvent;
     private Type type;
     private Visibility visibility;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
+    private CategoryDto category;
 
 
-    private String organizerId;
+    private UserDto organizer;
 
     //Its a list joined by ,
-    private String staffs;
+    private List<UserDto> staffs;
     //Its a list joined by ,
-    private String participants;
+    private List<UserDto> participants;
 
 
     private String backGroundImage;
@@ -40,20 +39,53 @@ public class EventDto {
     private String video;
     private boolean archived;
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Location location ;
+    private LocationDto location ;
     private String locationName;
     private String rue;
     private  String zipCode;
+    private List<PublicationDto> publications;
 
 
     public static EventDto entityToDto(Event event){
-        return EventDto.builder().id(event.getId()).name(event.getName()).dateDebutEvent(event.getDateDebutEvent()).dateFinEvent(event.getDateFinEvent()).type(event.getType()).visibility(event.getVisibility()).category(event.getCategory()).organizerId(event.getOrganizerId()).staffs(event.getStaffs()).participants(event.getParticipants()).backGroundImage(event.getBackGroundImage()).eventImage(event.getEventImage()).video(event.getVideo()).archived(event.isArchived()).description(event.getDescription()).location(event.getLocation()).locationName(event.getLocationName()).rue(event.getRue()).zipCode(event.getZipCode()).build();
+
+        return EventDto.builder().id(event.getId()).
+                name(event.getName()).
+                dateDebutEvent(event.getDateDebutEvent()).dateFinEvent(event.getDateFinEvent()).
+                type(event.getType()).visibility(event.getVisibility()).
+                category(CategoryDto.entityToDto(event.getCategory())).
+                organizer(UserKcService.findById(event.getOrganizerId())).
+                archived(event.isArchived()).
+                staffs(event.getStaffs() != null ? UserKcService.splitAndReturn(event.getStaffs()): null).
+                participants(event.getParticipants() != null ? UserKcService.splitAndReturn(event.getParticipants()): null).
+                backGroundImage(event.getBackGroundImage() != null ? event.getBackGroundImage() : null).
+                eventImage(event.getEventImage() != null ? event.getEventImage() : null).
+                video(event.getVideo() != null ? event.getVideo() : null ).
+                description(event.getDescription() != null ? event.getDescription(): null).
+                location(LocationDto.entityToDto(event.getLocation())).
+                locationName(event.getLocationName() != null ? event.getLocationName() : null).
+                rue(event.getRue() != null ? event.getRue() : null).
+                zipCode(event.getZipCode() != null ? event.getZipCode() : null).build();
     }
 
     public static Event dtoToEntity(EventDto eventDto){
-        return Event.builder().id(eventDto.getId()).name(eventDto.getName()).dateDebutEvent(eventDto.getDateDebutEvent()).dateFinEvent(eventDto.getDateFinEvent()).type(eventDto.getType()).visibility(eventDto.getVisibility()).category(eventDto.getCategory()).organizerId(eventDto.getOrganizerId()).staffs(eventDto.getStaffs()).participants(eventDto.getParticipants()).backGroundImage(eventDto.getBackGroundImage()).eventImage(eventDto.getEventImage()).video(eventDto.getVideo()).archived(eventDto.isArchived()).description(eventDto.getDescription()).location(eventDto.getLocation()).locationName(eventDto.getLocationName()).rue(eventDto.getRue()).zipCode(eventDto.getZipCode()).build();
+        return Event.builder().id(eventDto.getId()).
+                name(eventDto.getName()).
+                dateDebutEvent(eventDto.getDateDebutEvent()).dateFinEvent(eventDto.getDateFinEvent()).
+                type(eventDto.getType()).
+                visibility(eventDto.getVisibility()).
+                category(CategoryDto.dtoToEntity(eventDto.getCategory())).
+                organizerId(eventDto.getOrganizer().getId()).
+                archived(eventDto.isArchived()).
+                staffs(eventDto.getStaffs() != null ? eventDto.getStaffs().stream().map(UserDto::getId).collect(Collectors.joining(",")) : null).
+                participants(eventDto.getParticipants() != null ? eventDto.getParticipants().stream().map(UserDto::getId).collect(Collectors.joining(",")) : null).
+                backGroundImage(eventDto.getBackGroundImage() != null ? eventDto.getBackGroundImage() : null).
+                eventImage(eventDto.getEventImage() != null ? eventDto.getEventImage() : null).
+                video(eventDto.getVideo() != null ? eventDto.getVideo() : null).
+                description(eventDto.getDescription() != null ? eventDto.getDescription() : null).
+                location(LocationDto.dtoToEntity(eventDto.getLocation())).
+                locationName(eventDto.getLocationName() != null ? eventDto.getLocationName() : null).
+                rue(eventDto.getRue() != null ? eventDto.getRue() : null ).
+                zipCode(eventDto.getZipCode() != null ? eventDto.getZipCode() : null).build();
     }
 
     public static List<EventDto> entitiesToDtos(List<Event> events){

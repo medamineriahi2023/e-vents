@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@ToString
 public class Notification {
 
     @Id
@@ -22,8 +22,12 @@ public class Notification {
     private Long id;
     private NotificationType type;
     private String senderId;
-    private  long idEvent;
+    private  Long idEvent;
     private String receiverId;
+
+    private Long publicationId;
+    private Long reactId;
+    private Long commentId;
 
 
 }

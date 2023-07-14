@@ -4,11 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.CommentDto;
 import tn.esprit.events.dtos.PublicationDto;
-import tn.esprit.events.repositories.CommentRepository;
+import tn.esprit.events.dtos.ReactDto;
+import tn.esprit.events.entities.Publication;
+import tn.esprit.events.entities.React;
+import tn.esprit.events.entities.Comment;
+import tn.esprit.events.entities.Publication;
+import tn.esprit.events.entities.Topic;
 import tn.esprit.events.repositories.PublicationRepository;
-import tn.esprit.events.services.ICommentService;
+import tn.esprit.events.repositories.ReactRepository;
 import tn.esprit.events.services.IPublicationService;
 
+import javax.transaction.Transactional;
+import javax.transaction.Transactional;
+import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +25,9 @@ import java.util.List;
 public class PublicationServiceImpl implements IPublicationService {
 
     private final PublicationRepository publicationRepository;
+    private final ReactRepository reactRepository ;
+
+
     @Override
     public PublicationDto save(PublicationDto publicationDto) {
         return PublicationDto.entityToDto(publicationRepository.save(PublicationDto.dtoToEntity(publicationDto)));
@@ -30,4 +42,39 @@ public class PublicationServiceImpl implements IPublicationService {
     public PublicationDto update(PublicationDto publicationDto) {
         return PublicationDto.entityToDto(publicationRepository.save(PublicationDto.dtoToEntity(publicationDto)));
     }
+
+    @Override
+    public PublicationDto getById(Long id) {
+        return PublicationDto.entityToDto(publicationRepository.findById(id).get());
+    }
+
+    @Override
+    @Transactional
+    public PublicationDto createFeedbackPublication(PublicationDto publicationDto) {
+        publicationDto.setTopic(Topic.FEEDBACK);
+        Publication publication = PublicationDto.dtoToEntity(publicationDto);
+        Publication savedPublication = this.publicationRepository.save(publication);
+        PublicationDto savedPublicationDto = PublicationDto.entityToDto(savedPublication);
+        return savedPublicationDto;
+    }
+    @Transactional
+    @Override
+    public PublicationDto changePublicationReacts(ReactDto reactDto, String publicationId ) {
+        Publication publication = publicationRepository.findById(Long.parseLong(publicationId)).get();
+
+        React react = publication.getReacts().stream().filter(r -> r.getUserId().equals(reactDto.getUser().getId())).findFirst().orElse(null);
+        if (react != null) {
+            react.setLiked(reactDto.isLiked());
+        } else {
+            React newReact = new React();
+            newReact.setLiked(reactDto.isLiked());
+
+            newReact.setUserId(reactDto.getUser().getId());
+            React savedReact = reactRepository.save(newReact);
+            publication.getReacts().add(savedReact);
+
+        }
+        return  PublicationDto.entityToDto(publication);
+    }
+
 }

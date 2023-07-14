@@ -26,4 +26,11 @@ public class CommentServiceImpl implements ICommentService {
     public CommentDto update(CommentDto commentDto) {
         return CommentDto.entityToDto(commentRepository.save(CommentDto.dtoToEntity(commentDto)));
     }
+
+    @Override
+    public CommentDto getById(Long id) {
+        return CommentDto.entityToDto(commentRepository.findById(id).get());
+
+    }
 }
+

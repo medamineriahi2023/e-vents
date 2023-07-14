@@ -4,34 +4,61 @@ package tn.esprit.events.dtos;
 import lombok.*;
 import tn.esprit.events.entities.Notification;
 import tn.esprit.events.entities.NotificationType;
+import tn.esprit.events.services.ICommentService;
+import tn.esprit.events.services.IEventService;
+import tn.esprit.events.services.IPublicationService;
+import tn.esprit.events.services.IReactService;
+import tn.esprit.events.utils.UserKcService;
+import tn.esprit.events.utils.UserKcService;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-
+@ToString
 public class NotificationDto {
 
+    private static IEventService eventService;
+    private static IPublicationService publicationService;
+    private static ICommentService commentService;
+    private static IReactService reactService;
+    public NotificationDto(IEventService eventService) {
+        NotificationDto.eventService = eventService;
+    }
 
     private Long id;
     private NotificationType type;
-    private String senderId;
-    private  long idEvent;
-    private String receiverId;
+    private UserDto sender;
+    private EventDto eventDto;
+    private UserDto receiver;
 
+    private PublicationDto publication;
+    private ReactDto react;
+    private CommentDto comment;
+
+    //TODO missing attributes
     public static NotificationDto entityToDto(Notification notification){
-        return NotificationDto.builder().id(notification.getId()).type(notification.getType()).senderId(notification.getSenderId()).idEvent(notification.getIdEvent()).receiverId(notification.getReceiverId()).build();
+        return NotificationDto.builder().id(notification.getId()).type(notification.getType()).sender(UserKcService.findById(notification.getSenderId()))
+                .eventDto(notification.getIdEvent() != null ? eventService.getById(notification.getIdEvent()) : null)
+                .receiver(notification.getReceiverId() != null ? UserKcService.findById(notification.getReceiverId()) : null)
+                .publication(notification.getPublicationId() != null ? publicationService.getById(notification.getPublicationId()) : null)
+                .react(notification.getReactId() != null ? reactService.getById(notification.getReactId()) : null)
+                .comment(notification.getCommentId() != null ? commentService.getById(notification.getCommentId()) : null)
+                .build();
     }
 
     public static Notification dtoToEntity(NotificationDto notificationDto){
-        return Notification.builder().id(notificationDto.getId()).type(notificationDto.getType()).senderId(notificationDto.getSenderId()).idEvent(notificationDto.getIdEvent()).receiverId(notificationDto.getReceiverId()).build();
+        return Notification.builder().id(notificationDto.getId()).type(notificationDto.getType())
+                .senderId(notificationDto.getSender().getId()).idEvent(notificationDto.getEventDto().getId())
+                .receiverId(notificationDto.getReceiver().getId())
+                .commentId(notificationDto.getComment() != null ? notificationDto.getComment().getId() : null)
+                .publicationId(notificationDto.getPublication() != null ? notificationDto.getPublication().getId() : null)
+                .reactId(notificationDto.getReact() != null ? notificationDto.getReact().getId() : null)
+                .build();
     }
 
     public static List<NotificationDto> entitiesToDtos(List<Notification> notifications){
