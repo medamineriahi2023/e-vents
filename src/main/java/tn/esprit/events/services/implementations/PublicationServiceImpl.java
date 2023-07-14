@@ -20,6 +20,7 @@ import java.util.List;
 public class PublicationServiceImpl implements IPublicationService {
 
     private final PublicationRepository publicationRepository;
+
     private final ReactRepository reactRepository ;
     @Override
     public PublicationDto save(PublicationDto publicationDto) {
@@ -53,6 +54,7 @@ public class PublicationServiceImpl implements IPublicationService {
             newReact.setLiked(reactDto.isLiked());
 
             newReact.setUserId(reactDto.getUser().getId());
+
             React savedReact = reactRepository.save(newReact);
             publication.getReacts().add(savedReact);
 

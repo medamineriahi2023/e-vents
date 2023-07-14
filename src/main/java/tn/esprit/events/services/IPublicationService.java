@@ -10,5 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IPublicationService extends ICrudService<PublicationDto> {
+
+
     PublicationDto changePublicationReacts(ReactDto reactDto, String publicationId);
 }
