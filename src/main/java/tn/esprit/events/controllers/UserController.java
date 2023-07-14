@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.events.dtos.Role;
 import tn.esprit.events.dtos.UserDto;
+import tn.esprit.events.exceptions.EntityAlreadyExistException;
+import tn.esprit.events.exceptions.EntityNotFoundException;
+import tn.esprit.events.exceptions.ErrorOccurredException;
+import tn.esprit.events.exceptions.InvalidEntityException;
 import tn.esprit.events.repositories.KcUserRepository;
 import tn.esprit.events.services.IUserService;
 
@@ -38,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/roles/{roleName}")
-    public ResponseEntity<?> createRole(@PathVariable(value = "roleName") String roleName) {
+    public ResponseEntity<?> createRole(@PathVariable(value = "roleName") String roleName) throws EntityAlreadyExistException, EntityNotFoundException {
         return userService.createRole(roleName);
     }
 
@@ -50,18 +54,23 @@ public class UserController {
 
 
     @PutMapping(path = "roles")
-    public ResponseEntity<?> updateRole(@RequestBody Role role) {
+    public ResponseEntity<?> updateRole(@RequestBody Role role) throws EntityNotFoundException {
         return userService.updateRole(role);
     }
 
     @DeleteMapping(path = "/roles/{roleName}")
-    public ResponseEntity<?> deleteRole(@PathVariable(value = "roleName") String roleName) {
+    public ResponseEntity<?> deleteRole(@PathVariable(value = "roleName") String roleName) throws InvalidEntityException, ErrorOccurredException {
         return userService.deleteRole(roleName);
+    }
+
+    @DeleteMapping("{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "userId") String userId) throws InvalidEntityException, ErrorOccurredException {
+        return userService.deleteUser(userId);
     }
 
 
     @PostMapping("/roles/assignPermissionToRole")
-    public ResponseEntity<?> assignCompositeRolesForRole(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<?> assignCompositeRolesForRole(@RequestBody Map<String, Object> requestBody) throws EntityNotFoundException {
         String roleId = (String) requestBody.get("roleId");
         List<String> rolesIds = (List<String>) requestBody.get("rolesIds");
         return userService.assignCompositeRolesForRole(roleId, rolesIds);
@@ -73,20 +82,20 @@ public class UserController {
     }
 
     @PostMapping("/roles/assignRolesToUser")
-    public ResponseEntity<?> assignRolesToUser(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<?> assignRolesToUser(@RequestBody Map<String, Object> requestBody) throws EntityNotFoundException {
         String userId = (String) requestBody.get("userId");
         List<String> roleIds = (List<String>) requestBody.get("roleIds");
         return userService.assignRolesToUser(userId, roleIds);
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDto user) {
+    public ResponseEntity<?> createUser(@RequestBody UserDto user) throws EntityAlreadyExistException {
         return userService.createUser(user);
     }
 
 
     @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
+    public ResponseEntity<?> updateUser(@RequestBody UserDto user) throws EntityAlreadyExistException {
         return userService.editUser(user);
     }
 

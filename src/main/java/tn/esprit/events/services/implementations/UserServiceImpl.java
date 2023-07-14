@@ -8,9 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tn.esprit.events.dtos.Role;
 import tn.esprit.events.dtos.UserDto;
+import tn.esprit.events.exceptions.EntityAlreadyExistException;
+import tn.esprit.events.exceptions.EntityNotFoundException;
+import tn.esprit.events.exceptions.ErrorOccurredException;
+import tn.esprit.events.exceptions.InvalidEntityException;
+import tn.esprit.events.handlers.ErrorCodes;
 import tn.esprit.events.security.KeycloakConfig;
 import tn.esprit.events.services.IUserService;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -56,13 +62,15 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public ResponseEntity<?> deleteRole(String roleName) {
+    public ResponseEntity<?> deleteRole(String roleName) throws InvalidEntityException, ErrorOccurredException {
         Keycloak keycloak = KeycloakConfig.getInstance();
         RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
         RoleResource roleResource = realmResource.roles().get(roleName);
 
-        if (roleResource == null) {
-            return new ResponseEntity<>("Role with this id " + roleName + " is not found", HttpStatus.INTERNAL_SERVER_ERROR);
+        try {
+            roleResource.toRepresentation();
+        }catch (NotFoundException e) {
+            throw new InvalidEntityException("Role with this name " + roleName + " is not found", ErrorCodes.INVALID_ENTITY_EXCEPTION, new ArrayList<>(Collections.singleton("Role with this id " + roleName + " is not found")));
         }
 
         List<UserRepresentation> users = realmResource.users().list().stream().filter(u -> {
@@ -72,8 +80,9 @@ public class UserServiceImpl implements IUserService {
         }).collect(Collectors.toList());
 
         if (!users.isEmpty()) {
-            return new ResponseEntity<>("Cannot delete role as it is assigned to one or more users",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+
+            throw new ErrorOccurredException("Cannot delete role as it is assigned to one or more users", ErrorCodes.INVALID_ENTITY_EXCEPTION, new ArrayList<>(Collections.singleton("Cannot delete role as it is assigned to one or more users")));
+
         }
 
         List<GroupRepresentation> groups = realmResource.groups().groups().stream().filter(g -> {
@@ -83,8 +92,8 @@ public class UserServiceImpl implements IUserService {
         }).collect(Collectors.toList());
 
         if (!groups.isEmpty()) {
-            return new ResponseEntity<>("Cannot delete role as it is assigned to one or more groups",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ErrorOccurredException("Cannot delete role as it is assigned to one or more groups", ErrorCodes.ERROR_OCCURRED_EXCEPTION, new ArrayList<>(Collections.singleton("Cannot delete role as it is assigned to one or more groups")));
+
         }
 
         roleResource.remove();
@@ -93,13 +102,23 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<?> updateRole(Role role) {
+    public ResponseEntity<?> deleteUser(String userId) {
+
+        Keycloak keycloak = KeycloakConfig.getInstance();
+        RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
+        realmResource.users().get(userId).remove();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> updateRole(Role role) throws EntityNotFoundException {
         Keycloak keycloak = KeycloakConfig.getInstance();
         RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
 
         List<RoleRepresentation> existingRoles = realmResource.roles().list();
         if (existingRoles.stream().noneMatch(r -> r.getId().equals(role.getId()))) {
-            return new ResponseEntity<>("Role with this id does not exist", HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException("Role with this id does not exist", ErrorCodes.ENTITY_NOT_FOUND, new ArrayList<>(Collections.singleton("Role with this id does not exist")));
+
         }
 
         RoleRepresentation updatedRole = new RoleRepresentation();
@@ -113,13 +132,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<?> createRole(String roleName) {
+    public ResponseEntity<?> createRole(String roleName) throws EntityAlreadyExistException {
         Keycloak keycloak = KeycloakConfig.getInstance();
         RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
 
         List<RoleRepresentation> existingRoles = realmResource.roles().list();
         if (existingRoles.stream().anyMatch(r -> r.getName().equals(roleName))) {
-            return new ResponseEntity<>("Role with this name already exists", HttpStatus.BAD_REQUEST);
+            throw new EntityAlreadyExistException("Role with this name already exists", ErrorCodes.ENTITY_ALREADY_EXIST, new ArrayList<>(Collections.singleton("Role with this name already exists")));
+
         }
 
         RoleRepresentation role = new RoleRepresentation();
@@ -131,7 +151,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<?> assignCompositeRolesForRole(String roleId, List<String> rolesIds) {
+    public ResponseEntity<?> assignCompositeRolesForRole(String roleId, List<String> rolesIds) throws EntityNotFoundException {
         Keycloak keycloak = KeycloakConfig.getInstance();
         RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
 
@@ -139,7 +159,7 @@ public class UserServiceImpl implements IUserService {
         RoleResource roleResource = realmResource.roles().get(role.getName());
 
         if (role == null) {
-            return new ResponseEntity<>("Role with ID " + roleId + " not found.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new EntityNotFoundException("Role with ID " + roleId + " not found.", ErrorCodes.ENTITY_NOT_FOUND, new ArrayList<>(Collections.singleton("Role with ID " + roleId + " not found.")));
         }
 
         Set<RoleRepresentation> existingComposites = roleResource.getRoleComposites();
@@ -188,13 +208,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<?> assignRolesToUser(String userId, List<String> roleIds) {
+    public ResponseEntity<?> assignRolesToUser(String userId, List<String> roleIds) throws EntityNotFoundException {
         Keycloak keycloak = KeycloakConfig.getInstance();
         RealmResource realmResource = keycloak.realm(KeycloakConfig.realm);
         UserResource userResource = realmResource.users().get(userId);
 
         if (userResource == null) {
-            return new ResponseEntity<>("User with ID " + userId + " not found", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new EntityNotFoundException("User with ID " + userId + " not found", ErrorCodes.ENTITY_NOT_FOUND, new ArrayList<>(Collections.singleton("User with ID " + userId + " not found")));
         }
 
         RoleMappingResource roleMappingResource = userResource.roles();
@@ -217,14 +237,15 @@ public class UserServiceImpl implements IUserService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<?> editUser(UserDto userRequest) {
+    public ResponseEntity<?> editUser(UserDto userRequest) throws EntityAlreadyExistException {
         RealmResource realmResource = KeycloakConfig.getInstance().realm(KeycloakConfig.realm);
         List<UserRepresentation> existingUsers = realmResource.users().search(userRequest.getUsername(), null, null, null,
                 0, 1);
         if (!existingUsers.isEmpty()) {
             for (UserRepresentation existingUser : existingUsers) {
                 if (!existingUser.getId().equals(userRequest.getId())) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+                    throw new EntityAlreadyExistException("Username already exists", ErrorCodes.ENTITY_ALREADY_EXIST, new ArrayList<>(Collections.singleton("Username already exists")));
+
                 }
             }
         }
@@ -233,7 +254,7 @@ public class UserServiceImpl implements IUserService {
         if (!existingUsers.isEmpty()) {
             for (UserRepresentation existingUser : existingUsers) {
                 if (!existingUser.getId().equals(userRequest.getId())) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+                    throw new EntityAlreadyExistException("Email already exists", ErrorCodes.ENTITY_ALREADY_EXIST, new ArrayList<>(Collections.singleton("Email already exists")));
                 }
             }
         }
@@ -257,7 +278,7 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public ResponseEntity<?> createUser(UserDto user) {
+    public ResponseEntity<?> createUser(UserDto user) throws EntityAlreadyExistException {
         final int resp = 201;
         UsersResource usersResource = KeycloakConfig.getInstance().realm(KeycloakConfig.realm).users();
         CredentialRepresentation credentialRepresentation = createPasswordCredentials(user.getPassword());
@@ -281,7 +302,7 @@ public class UserServiceImpl implements IUserService {
             UserRepresentation userRepresentation = usersResource.get(userId).toRepresentation();
             return new ResponseEntity<>(userRepresentation, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("this user is already exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new EntityAlreadyExistException("this user is already exist", ErrorCodes.ENTITY_ALREADY_EXIST, new ArrayList<>(Collections.singleton("this user is already exist")));
 
     }
 

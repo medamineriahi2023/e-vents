@@ -21,8 +21,6 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
     private String serviceName;
-
-    // list of users ids joined by ","
     private String staffs;
 
 

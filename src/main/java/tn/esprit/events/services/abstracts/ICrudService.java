@@ -8,4 +8,5 @@ public interface ICrudService<T> {
     List<T> getAll();
     T update(T t);
     T getById(Long id);
+
 }

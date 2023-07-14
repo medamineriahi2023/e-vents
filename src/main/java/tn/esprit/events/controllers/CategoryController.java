@@ -1,12 +1,10 @@
 package tn.esprit.events.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.events.controllers.abstracts.AbstractCrudController;
 import tn.esprit.events.dtos.CategoryDto;
+import tn.esprit.events.exceptions.EntityNotFoundException;
 import tn.esprit.events.services.ICategoryService;
 
 import java.util.List;
@@ -34,8 +32,8 @@ public class CategoryController implements AbstractCrudController<CategoryDto> {
         return iCategoryService.update(categoryDto);
     }
 
-    @PatchMapping
-    public CategoryDto updatePatch(@RequestBody Map<Object,Object> fields){
-        return iCategoryService.updatePatch(fields);
+    @PatchMapping(path = "/{id}")
+    public CategoryDto updatePatch(@RequestBody Map<Object,Object> fields, @PathVariable Long id) throws EntityNotFoundException {
+        return iCategoryService.updatePatch(fields,id);
     }
 }
